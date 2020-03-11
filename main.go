@@ -25,7 +25,7 @@ var (
 
 const METADATA_TEMPLATE = `{
     "deleted": false,
-    "lastModified": "%d",
+    "lastModified": "%d000",
     "metadatamodified": true,
     "modified": true,
     "parent": "",
