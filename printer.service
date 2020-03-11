@@ -1,0 +1,9 @@
+[Unit]
+Description=Native printing to reMarkable
+
+[Service]
+ExecStart=/home/root/printer.arm -restart
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
