@@ -12,15 +12,15 @@ Assuming you have Go installed, simply run (with reMarkable connected via USB)
     
 This will install and start the printer service on the reMarkable.
     
-If you don't have go, you can download and unzip the precompiled binary from the releases page to this directory then run the above command.
+If you don't have go, you can download and unzip the precompiled release from the releases page to this directory then run the above command.
 
 ## Adding the reMarkable as a printer
 
 #### Linux (easy)
 
-Modify printer.conf and change 10.11.99.1 to your reMarkable's address/hostname, then run
+Set `10.11.99.1` to your device's address or hostname.
 
-    make install_config
+    make install_config host=10.11.99.1
 
 #### Linux (manual)
 
@@ -37,6 +37,10 @@ Linux
 #### OSX (manual)
 
 See [Add a network printer by its IP address](https://support.apple.com/guide/mac-help/add-a-printer-on-mac-mh14004/mac).  Choose `HP Jetdirect` for the protocol.
+
+#### Caveats
+
+No authentication, so keep WiFi off while not in use.
 
 ## Testing on host
 

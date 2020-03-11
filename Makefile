@@ -19,16 +19,18 @@ install: printer.arm
 		systemctl restart printer
 	ENDSSH
 
-.PHONY: fetch_prebuilt
-fetch_prebuilt:
-	wget https://github.com/evidlo/remarkable_printer/releases/latest/download/printer.zip
-
-.PHONY: install_prebuilt
-install_prebuilt: fetch_prebuilt install
+.PHONY: release
+release: printer.arm printer.x86
+	rm -f printer.zip
+	zip printer.zip ./ -r
 
 .PHONY: install_config
 install_config:
-	sudo cat printer.conf >> /etc/cups/printers.conf
+	sudo lpadmin -p reMarkable \
+		-E \
+		-o printer-error-policy=abort-job \
+		-v socket://$(host) \
+		-m lsb/usr/cupsfilters/Generic-PDF_Printer-PDF.ppd
 
 clean:
-	rm printer.x86 printer.arm
+	rm -f printer.x86 printer.arm printer.zip

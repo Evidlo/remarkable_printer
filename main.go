@@ -117,6 +117,7 @@ func handleRequest(conn net.Conn) {
 	// Read until start of PDF
 	for {
 		line, err := reader.ReadString('\n')
+		debug(line)
 		if err == io.EOF {
 			fmt.Println("Invalid PDF")
 			os.Exit(1)
