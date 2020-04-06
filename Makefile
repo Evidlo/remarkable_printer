@@ -2,9 +2,11 @@
 host=10.11.99.1
 
 printer.arm:
+	go get
 	env GOOS=linux GOARCH=arm GOARM=5 go build -o printer.arm
 
 printer.x86:
+	go get ./...
 	go build -o printer.x86
 
 .PHONY: install

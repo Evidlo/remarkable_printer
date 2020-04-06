@@ -45,8 +45,8 @@ func main() {
 	debug := flag.Bool("debug", false, "enable debug output")
 	test := flag.Bool("test", false, "use /tmp as output dir")
 	restart := flag.Bool("restart", false, "restart xochitl after saving PDF")
-	CONN_HOST := *flag.String("host", CONN_HOST, "override bind address")
-	CONN_PORT := *flag.String("port", CONN_PORT, "override bind port")
+	CONN_HOST := flag.String("host", CONN_HOST, "override bind address")
+	CONN_PORT := flag.String("port", CONN_PORT, "override bind port")
 
 	flag.Parse()
 
@@ -60,12 +60,12 @@ func main() {
 	// ----- Listen for connections -----
 
 	// Listen for incoming connections.
-	l, err := net.Listen("tcp", CONN_HOST + ":" + CONN_PORT)
+	l, err := net.Listen("tcp", *CONN_HOST + ":" + *CONN_PORT)
 	check(err)
 	defer l.Close()
 
 	// Close the listener when the application closes.
-	fmt.Println("Listening on " + CONN_HOST + ":" + CONN_PORT)
+	fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
 	for {
 		// Listen for an incoming connection.
 		conn, err := l.Accept()
