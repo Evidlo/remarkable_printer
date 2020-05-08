@@ -6,13 +6,14 @@ Print natively to your reMarkable wirelessly with no extensions or reMarkable cl
 
 ## Install
 
-Assuming you have Go installed, simply run (with reMarkable connected via USB)
+With the reMarkable connected via USB, execute
 
+    make download_prebuilt
     make install
     
 This will install and start the printer service on the reMarkable.
     
-If you don't have go, you can download and unzip the precompiled release from the releases page to this directory then run the above command.
+Alternatively, you can build the executable yourself by omitting the `make download_prebuilt` step.
 
 ## Adding the reMarkable as a printer
 

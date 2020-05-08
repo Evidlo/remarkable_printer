@@ -1,4 +1,6 @@
 .ONESHELL:
+.SILENT:
+
 host=10.11.99.1
 
 printer.arm:
@@ -9,6 +11,12 @@ printer.x86:
 	go get ./...
 	go build -o printer.x86
 
+# get latest prebuilt releases
+.PHONY: download_prebuilt
+download_prebuilt:
+	wget http://github.com/evidlo/remarkable_printer/releases/latest/download/release.zip
+
+# install to device
 .PHONY: install
 install: printer.arm
 	ssh-add
@@ -23,8 +31,8 @@ install: printer.arm
 
 .PHONY: release
 release: printer.arm printer.x86
-	rm -f printer.zip
-	zip printer.zip ./ -r
+	rm -f release.zip
+	zip release.zip ./ -r
 
 .PHONY: install_config
 install_config:
@@ -35,4 +43,4 @@ install_config:
 		-m lsb/usr/cupsfilters/Generic-PDF_Printer-PDF.ppd
 
 clean:
-	rm -f printer.x86 printer.arm printer.zip
+	rm -f printer.x86 printer.arm release.zip
