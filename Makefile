@@ -2,7 +2,7 @@
 host=10.11.99.1
 
 printer.arm:
-	go get
+	go get ./...
 	env GOOS=linux GOARCH=arm GOARM=5 go build -o printer.arm
 
 printer.x86:

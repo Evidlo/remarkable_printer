@@ -128,6 +128,7 @@ func handleRequest(conn net.Conn) {
 			title = strings.Split(line, "\"")[1]
 			debug("Setting title to", title)
 		}
+		// PDF section started
 		if strings.HasPrefix(line, "%PDF-") {
 			debug("PDF begin")
 			_, err := f.WriteString(line)
