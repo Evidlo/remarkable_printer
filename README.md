@@ -17,7 +17,7 @@ Alternatively, you can build the executable yourself by omitting the `make downl
 
 ## Adding the reMarkable as a printer
 
-#### Linux (easy)
+#### Linux/OSX (easy)
 
 Set `10.11.99.1` to your device's address or hostname.
 

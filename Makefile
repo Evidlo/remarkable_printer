@@ -40,7 +40,8 @@ install_config:
 		-E \
 		-o printer-error-policy=abort-job \
 		-v socket://$(host) \
-		-m lsb/usr/cupsfilters/Generic-PDF_Printer-PDF.ppd
+		-P remarkable.ppd
+		# -m lsb/usr/cupsfilters/Generic-PDF_Printer-PDF.ppd
 
 clean:
 	rm -f printer.x86 printer.arm release.zip
