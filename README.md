@@ -39,6 +39,10 @@ Linux
 
 See [Add a network printer by its IP address](https://support.apple.com/guide/mac-help/add-a-printer-on-mac-mh14004/mac).  Choose `HP Jetdirect` for the protocol.
 
+#### Windows (manual)
+
+See [here](https://github.com/Evidlo/remarkable_printer/issues/4)
+
 #### Caveats
 
 No authentication, so keep WiFi off while not in use.
