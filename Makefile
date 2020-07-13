@@ -15,6 +15,7 @@ printer.x86:
 .PHONY: download_prebuilt
 download_prebuilt:
 	wget http://github.com/evidlo/remarkable_printer/releases/latest/download/release.zip
+	unzip release.zip
 
 # install to device
 .PHONY: install
@@ -32,7 +33,7 @@ install: printer.arm
 .PHONY: release
 release: printer.arm printer.x86
 	rm -f release.zip
-	zip release.zip ./ -r
+	zip release.zip printer.arm printer.x86 -r
 
 .PHONY: install_config
 install_config:
