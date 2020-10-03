@@ -21,14 +21,10 @@ download_prebuilt:
 .PHONY: install
 install: printer.arm
 	ssh-add
-	ssh root@$(host) systemctl stop printer
+	ssh root@$(host) systemctl stop printer 2>&1 >/dev/null
 	scp printer.arm root@$(host):
 	scp printer.service root@$(host):/etc/systemd/system
-	ssh root@$(host) <<- ENDSSH
-		systemctl daemon-reload
-		systemctl enable printer
-		systemctl restart printer
-	ENDSSH
+	ssh root@$(host) 'systemctl daemon-reload && systemctl enable printer && systemctl restart printer'
 
 .PHONY: release
 release: printer.arm printer.x86
