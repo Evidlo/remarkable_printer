@@ -21,7 +21,10 @@ download_prebuilt:
 .PHONY: install
 install: printer.arm
 	ssh-add
-	ssh root@$(host) systemctl stop printer 2>&1 >/dev/null
+	if ssh root@$(host) systemctl is-active --quiet printer;
+	then
+	    [stop service]
+	fi
 	scp printer.arm root@$(host):
 	scp printer.service root@$(host):/etc/systemd/system
 	ssh root@$(host) 'systemctl daemon-reload && systemctl enable printer && systemctl restart printer'
