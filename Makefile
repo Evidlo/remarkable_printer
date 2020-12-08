@@ -14,21 +14,19 @@ printer.x86:
 # get latest prebuilt releases
 .PHONY: download_prebuilt
 download_prebuilt:
-	wget http://github.com/evidlo/remarkable_printer/releases/latest/download/release.zip
+	curl -LO http://github.com/evidlo/remarkable_printer/releases/latest/download/release.zip
 	unzip release.zip
 
 # install to device
 .PHONY: install
 install: printer.arm
-	ssh-add
-	ssh root@$(host) systemctl stop printer
+	eval $(shell ssh-agent -s)
+	ssh -o AddKeysToAgent=yes root@$(host) systemctl stop printer || true
 	scp printer.arm root@$(host):
 	scp printer.service root@$(host):/etc/systemd/system
-	ssh root@$(host) <<- ENDSSH
-		systemctl daemon-reload
-		systemctl enable printer
-		systemctl restart printer
-	ENDSSH
+	ssh root@$(host) systemctl daemon-reload
+	ssh root@$(host) systemctl enable printer
+	ssh root@$(host) systemctl restart printer
 
 .PHONY: release
 release: printer.arm printer.x86
