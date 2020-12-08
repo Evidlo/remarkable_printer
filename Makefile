@@ -14,7 +14,7 @@ printer.x86:
 # get latest prebuilt releases
 .PHONY: download_prebuilt
 download_prebuilt:
-	wget http://github.com/evidlo/remarkable_printer/releases/latest/download/release.zip
+	curl -LO http://github.com/evidlo/remarkable_printer/releases/latest/download/release.zip
 	unzip release.zip
 
 # install to device
