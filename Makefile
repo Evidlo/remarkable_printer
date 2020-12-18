@@ -31,7 +31,7 @@ install: printer.arm
 .PHONY: release
 release: printer.arm printer.x86
 	rm -f release.zip
-	zip release.zip printer.arm printer.x86 -r
+	zip release.zip printer.arm printer.x86 printer.service -r
 
 .PHONY: install_config
 install_config:

@@ -6,14 +6,15 @@ Print natively to your reMarkable wirelessly with no extensions or reMarkable cl
 
 ## Install
 
-With the reMarkable connected via USB, execute
+Connect the reMarkable via USB and make sure it has internet access,
 
-    make download_prebuilt
-    make install
+Connect to the reMarkable with [SSH](https://remarkablewiki.com/tech/ssh) and execute
+
+    curl http://raw.githubusercontent.com/Evidlo/remarkable_printer/master/install.sh | sh
     
 This will install and start the printer service on the reMarkable.
     
-Alternatively, you can build the executable yourself by omitting the `make download_prebuilt` step.
+Alternatively, you can build and install the executable yourself with `make install`.
 
 ## Adding the reMarkable as a printer
 
