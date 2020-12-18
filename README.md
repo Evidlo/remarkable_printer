@@ -10,7 +10,7 @@ Connect the reMarkable via USB and make sure it has internet access,
 
 Connect to the reMarkable with [SSH](https://remarkablewiki.com/tech/ssh) and execute
 
-    curl http://raw.githubusercontent.com/Evidlo/remarkable_printer/master/install.sh | sh
+    wget -O - http://raw.githubusercontent.com/Evidlo/remarkable_printer/master/install.sh | sh
     
 This will install and start the printer service on the reMarkable.
     
