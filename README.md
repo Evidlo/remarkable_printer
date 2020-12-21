@@ -4,29 +4,25 @@ Print natively to your reMarkable wirelessly with no extensions or reMarkable cl
 
 ![](img.jpg)
 
-## Install
+## Quick Start
 
-Connect the reMarkable via USB and make sure it has internet access,
+Connect the reMarkable via USB and make sure it has internet access.
 
 Connect to the reMarkable with [SSH](https://remarkablewiki.com/tech/ssh) and execute
 
     wget -O - http://raw.githubusercontent.com/Evidlo/remarkable_printer/master/install.sh | sh
     
-This will install and start the printer service on the reMarkable.
+Then configure your OS to print to the reMarkable, shown below.
     
-Alternatively, you can build and install the executable yourself with `make install`.
-
 ## Adding the reMarkable as a printer
 
 #### Linux/OSX (easy)
-
-Set `10.11.99.1` to your device's address or hostname.
 
     make install_config host=10.11.99.1
 
 #### Linux (manual)
 
-We will add the reMarkable as an Appsocket/JetDirect printer.
+We will add the reMarkable as an Appsocket/JetDirect printer and use the PDF printer driver.
 
 Linux
 
@@ -42,7 +38,7 @@ See [Add a network printer by its IP address](https://support.apple.com/guide/ma
 
 #### Windows (manual)
 
-See [here](https://github.com/Evidlo/remarkable_printer/issues/4)
+See [here](https://github.com/Evidlo/remarkable_printer/wiki/Windows-Setup)
 
 #### Caveats
 
