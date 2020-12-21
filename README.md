@@ -69,3 +69,7 @@ This script simply listens on TCP 9100 and waits for a PDF header, then begins s
             restart xochitl after saving PDF
       -test
             use /tmp as output dir
+
+## Debugging
+
+    journalctl --unit printer -f

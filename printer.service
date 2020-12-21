@@ -2,7 +2,7 @@
 Description=Native printing to reMarkable
 
 [Service]
-ExecStart=/home/root/printer.arm -restart
+ExecStart=/home/root/printer.arm -restart -debug
 Restart=always
 
 [Install]
