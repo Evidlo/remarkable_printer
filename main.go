@@ -60,32 +60,30 @@ func main() {
 	// ----- Listen for connections -----
 
 	// Listen for incoming connections.
-	l, err := net.Listen("tcp", *CONN_HOST + ":" + *CONN_PORT)
+	l, err := net.FileListener(os.NewFile(3, "systemd-socket"))
 	check(err)
 	defer l.Close()
 
 	// Close the listener when the application closes.
 	fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
-	for {
-		// Listen for an incoming connection.
-		conn, err := l.Accept()
-		if err != nil {
-			fmt.Println("Error accepting: ", err.Error())
-			os.Exit(1)
-		}
-		handleRequest(conn)
 
-		// Restart xochitl
-		if *restart {
-			stdout, err := exec.Command("systemctl", "restart", "xochitl").CombinedOutput()
-			if err != nil {
-				fmt.Println("xochitl restart failed with message:", string(stdout))
-			}
-		}
-
+	// Listen for an incoming connection.
+	conn, err := l.Accept()
+	if err != nil {
+		fmt.Println("Error accepting: ", err.Error())
+		os.Exit(1)
 	}
-}
+	handleRequest(conn)
 
+	// Restart xochitl
+	if *restart {
+		stdout, err := exec.Command("systemctl", "restart", "xochitl").CombinedOutput()
+		if err != nil {
+			fmt.Println("xochitl restart failed with message:", string(stdout))
+		}
+	}
+
+}
 
 func debug(msg ...string) {
 	if LOG_LEVEL == "debug" {
