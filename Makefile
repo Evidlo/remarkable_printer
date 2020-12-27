@@ -24,14 +24,15 @@ install: printer.arm
 	ssh -o AddKeysToAgent=yes root@$(host) systemctl stop printer || true
 	scp printer.arm root@$(host):
 	scp printer.service root@$(host):/etc/systemd/system
+	scp printer.socket root@$(host):/etc/systemd/system
 	ssh root@$(host) systemctl daemon-reload
-	ssh root@$(host) systemctl enable printer
-	ssh root@$(host) systemctl restart printer
+	ssh root@$(host) systemctl enable printer.socket
+	ssh root@$(host) systemctl restart printer.socket
 
 .PHONY: release
 release: printer.arm printer.x86
 	rm -f release.zip
-	zip release.zip printer.arm printer.x86 printer.service -r
+	zip release.zip printer.arm printer.x86 printer.service printer.socket -r
 
 .PHONY: install_config
 install_config:

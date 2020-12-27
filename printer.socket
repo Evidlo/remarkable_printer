@@ -1,0 +1,8 @@
+[Unit]
+Description=Socket for native printing to reMarkable
+
+[Socket]
+ListenStream=10.11.99.1:9100
+
+[Install]
+WantedBy=multi-user.target
