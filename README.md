@@ -24,8 +24,6 @@ Then configure your OS to print to the reMarkable, shown below.
 
 We will add the reMarkable as an Appsocket/JetDirect printer and use the PDF printer driver.
 
-Linux
-
     $ sudo system-config-printer
     # Add > Network Printer > AppSocket/HP JetDirect
     # Enter the address/hostname of the device (10.11.99.1 for USB connected device)
