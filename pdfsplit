@@ -1,0 +1,17 @@
+#!/bin/bash
+# Evan Widloski - 2020-01-18
+# Cupsfilter script to split pages in half
+
+# accept PDF as argument or from stdin
+if [ -n "$6" ]
+then
+    cp "$6" /tmp/pdfsplit_input.pdf
+else
+    cat > /tmp/pdfsplit_input.pdf
+fi
+
+
+# split pdf and write to stdout
+mutool poster -y 2 /tmp/pdfsplit_input.pdf /tmp/pdfsplit_output.pdf
+cat /tmp/pdfsplit_output.pdf
+rm -f /tmp/pdfsplit_input.pdf /tmp/pdfsplit_output.pdf

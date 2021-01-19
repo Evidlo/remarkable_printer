@@ -40,7 +40,15 @@ install_config:
 		-o printer-error-policy=abort-job \
 		-v socket://$(host) \
 		-P remarkable.ppd
-		# -m lsb/usr/cupsfilters/Generic-PDF_Printer-PDF.ppd
+
+.PHONY: install_config_split
+install_config_split:
+	sudo lpadmin -p reMarkable_split \
+		-E \
+		-o printer-error-policy=abort-job \
+		-v socket://$(host) \
+		-P remarkable_split.ppd
+	sudo cp pdfsplit /usr/lib/cups/filter
 
 clean:
 	rm -f printer.x86 printer.arm release.zip
