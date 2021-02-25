@@ -29,6 +29,22 @@ We will add the reMarkable as an Appsocket/JetDirect printer and use the PDF pri
     # Enter the address/hostname of the device (10.11.99.1 for USB connected device)
     # Forward > Generic > Forward > PDF > Forward
     # Set the printer name and save
+
+#### CUPS Website
+
+Alternatively, if we use the CUPS printer service under Linux, we can use the local CUPS webservice to install the PDF printer. 
+
+    open localhost:631
+    go to Administration
+    select Add Printer
+    select Other Network Printers: AppSocket/HP JetDirect
+    Enter the address/hostname under Connection e.g. socket:10.11.99.1 for USB
+    Enter a Printer Name, Description and Location as you like
+    Under Make: select `Generic` and press Continue
+    Under Model: select `Generic PDF Printer` and select Add Printer
+    Set Printer Default Options as desired (standard would be ok).
+    
+    Under the newly created Printer, select Maintainance and then Print Test Page.      
     
 #### OSX (manual)
 
@@ -47,6 +63,7 @@ No authentication, so keep WiFi off while not in use.
 Virtually all network printers accept raw Postscript/PDF data on TCP port 9100 via the Appsocket/HP Jetdirect protocol.  Sometimes this data is preceded by a few plaintext lines telling the printer information such as the print job name and print settings.
 
 This script simply listens on TCP 9100 and waits for a PDF header, then begins saving data to a pdf file (while also creating the accompanying .metadata file).  The output filename is extracted from the print job name line, if it exists.
+Unforuntately, xochitl (the main programm running on the remarkable tablet) needs to get restarted to identify the new document. This will be done automatically by the printer-service on the remarkable. Thus, we can observe the new start of xochtil after a print. This is normal and intended and not a crash of xochitl.
 
 ## Testing on host
 
