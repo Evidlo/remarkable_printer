@@ -30,6 +30,8 @@ We will add the reMarkable as an Appsocket/JetDirect printer and use the PDF pri
     # Forward > Generic > Forward > PDF > Forward
     # Set the printer name and save
     
+You may need to install system-config-printer first.
+    
 #### OSX (manual)
 
 See [Add a network printer by its IP address](https://support.apple.com/guide/mac-help/add-a-printer-on-mac-mh14004/mac).  Choose `HP Jetdirect` for the protocol.
