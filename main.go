@@ -78,8 +78,8 @@ func main() {
 
 		// Restart xochitl
 		if *restart {
-			stdout, exitcode := exec.Command("systemctl", "is-enabled", "xochitl").CombinedOutput()
-			if exitcode != nil {
+			_, exitcode := exec.Command("systemctl", "is-enabled", "xochitl").CombinedOutput()
+			if exitcode == nil {
 				debug("Restarting xochitl")
 				stdout, err := exec.Command("systemctl", "restart", "xochitl").CombinedOutput()
 				if err != nil {
@@ -94,7 +94,11 @@ func main() {
 
 func debug(msg ...string) {
 	if LOG_LEVEL == "debug" {
-		fmt.Println(msg)
+		for _, value := range msg {
+			fmt.Print(value)
+			fmt.Print(" ")
+		}
+		fmt.Println()
 	}
 }
 
@@ -109,7 +113,7 @@ func check(e error) {
 func handleRequest(conn net.Conn) {
 	u, _ := uuid.NewRandom()
 	pdf_path := XOCHITL_DIR + u.String() + ".pdf"
-	fmt.Println("Saving PDF to", pdf_path)
+	fmt.Println("Saving PDF to:", pdf_path)
 
 	// ----- Create .pdf -----
 
@@ -122,11 +126,11 @@ func handleRequest(conn net.Conn) {
 	// Read until start of PDF
 	for {
 		line, err := reader.ReadString('\n')
-		debug(line)
+		debug(strings.TrimRight(line, "\n"))
 		// set print job name as file title
 		if strings.HasPrefix(line, "@PJL JOB NAME") {
 			title = strings.Split(line, "\"")[1]
-			debug("Setting title to", title)
+			debug("Setting title to:", title)
 		}
 		// PDF section started
 		if strings.HasPrefix(line, "%PDF-") {
