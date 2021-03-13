@@ -42,7 +42,7 @@ func main() {
 
 	// ----- Parse options -----
 
-	debug := flag.Bool("debug", false, "enable debug output")
+	debug_flag := flag.Bool("debug", false, "enable debug output")
 	test := flag.Bool("test", false, "use /tmp as output dir")
 	restart := flag.Bool("restart", false, "restart xochitl after saving PDF")
 	CONN_HOST := flag.String("host", CONN_HOST, "override bind address")
@@ -50,8 +50,9 @@ func main() {
 
 	flag.Parse()
 
-	if *debug {
+	if *debug_flag {
 		LOG_LEVEL = "debug"
+		debug("Debugging enabled")
 	}
 	if *test {
 		XOCHITL_DIR = "/tmp/"
@@ -77,9 +78,13 @@ func main() {
 
 		// Restart xochitl
 		if *restart {
-			stdout, err := exec.Command("systemctl", "restart", "xochitl").CombinedOutput()
-			if err != nil {
-				fmt.Println("xochitl restart failed with message:", string(stdout))
+			stdout, exitcode := exec.Command("systemctl", "is-enabled", "xochitl").CombinedOutput()
+			if exitcode != nil {
+				debug("Restarting xochitl")
+				stdout, err := exec.Command("systemctl", "restart", "xochitl").CombinedOutput()
+				if err != nil {
+					fmt.Println("xochitl restart failed with message:", string(stdout))
+				}
 			}
 		}
 
