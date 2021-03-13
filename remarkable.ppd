@@ -1,90 +1,252 @@
 *PPD-Adobe: "4.3"
-*%%%% PPD file for Remarkable Tablet with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v2.2.12.
-*FormatVersion: "4.3"
-*FileVersion: "1.0"
-*LanguageVersion: English
+*%
+*% This PPD file is for using a PDF printer in its native PDF mode, with
+*% option settings controlled via PJL commands. It uses CUPS with the
+*% OpenPrinting CUPS Filters package.
+*%
+*% This PPD is experimental. It is possible that some of the options
+*% and settings do not make sense or do not cause any change on the output.
+*% It can even happen that with certain settings nothing or an error page
+*% comes out.
+*%
+*% This file is published under the GNU General Public License
+*%
+*% You may save this file as 'Generic-PDF_Printer-PDF.ppd'
+*%
+*%
+*FormatVersion:	"4.3"
+*FileVersion:	"1.1"
+*LanguageVersion: English 
 *LanguageEncoding: ISOLatin1
-*PCFileName: "remarkable.ppd"
-*Product: "(Remarkable Tablet)"
-*Manufacturer: "Remarkable"
-*ModelName: "Remarkable Tablet"
-*ShortNickName: "Remarkable Tablet"
-*NickName: "Remarkable Tablet"
-*PSVersion: "(3010.000) 0"
-*LanguageLevel: "3"
-*ColorDevice: False
-*DefaultColorSpace: Gray
-*FileSystem: False
-*Throughput: "1"
+*PCFileName:	"PDF.PPD"
+*Manufacturer:	"reMarkable"
+*Product:       "reMarkable Tablet"
+*cupsVersion:	1.0
+*cupsManualCopies: True
+*cupsModelNumber:  2
+*ModelName:     "reMarkable"
+*ShortNickName: "reMarkable"
+*NickName:      "reMarkable"
+*PSVersion:     "(3010.107) 0"
+*LanguageLevel:	"3"
+*ColorDevice:	True
+*DefaultColorSpace: CMYK
+*FileSystem:	False
+*Throughput:	"30"
 *LandscapeOrientation: Plus90
-*TTRasterizer: Type42
-*cupsVersion: 2.2
-*cupsModelNumber: 0
-*cupsManualCopies: False
-*cupsFilter: "application/pdf 0 -"
-*cupsLanguages: "en"
-*OpenUI *PageSize/Media Size: PickOne
-*OrderDependency: 10 AnySetup *PageSize
-*DefaultPageSize: Remarkable
-*PageSize Remarkable/Remarkable: "<</PageSize[439 581]/ImagingBBox null>>setpagedevice"
-*PageSize A4/A4: "<</PageSize[595 842]/ImagingBBox null>>setpagedevice"
-*PageSize A5/A5: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
-*CloseUI: *PageSize
-*OpenUI *PageRegion/Media Size: PickOne
-*OrderDependency: 10 AnySetup *PageRegion
-*DefaultPageRegion: Remarkable
-*PageRegion Remarkable/Remarkable: "<</PageSize[439 581]/ImagingBBox null>>setpagedevice"
-*PageRegion A4/A4: "<</PageSize[595 842]/ImagingBBox null>>setpagedevice"
-*PageRegion A5/A5: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
-*CloseUI: *PageRegion
-*DefaultImageableArea: Remarkable
-*ImageableArea Remarkable/Remarkable: "0 0 439.370086669922 581.102355957031"
-*ImageableArea A4/A4: "0 0 595 842"
-*ImageableArea A5/A5: "0 0 420 595"
-*DefaultPaperDimension: Remarkable
-*PaperDimension Remarkable/Remarkable: "439.370086669922 581.102355957031"
+*TTRasterizer:	Type42
+*1284DeviceID: "MFG:Generic;CMD:PJL,PDF;MDL:PDF Printer;CLS:PRINTER;DES:Generic PDF Printer;DRV:DPDF,R1,M0;"
+*JCLBegin:            "<1B>%-12345X@PJL JOB<0A>"
+*JCLToPDFInterpreter: "@PJL ENTER LANGUAGE = PDF<0A>"
+*JCLEnd:              "<1B>%-12345X@PJL EOJ <0A><1B>%-12345X"
+*cupsFilter: "application/vnd.cups-pdf 0 -"
+*cupsFilter2: "application/pdf application/vnd.cups-pdf 0 pdftopdf"
+
+*OpenGroup: General/General
+*JCLOpenUI *PageSize/Page Size: PickOne
+*OrderDependency: 100 JCLSetup *PageSize
+*DefaultPageSize: Letter
+*PageSize Letter/Letter: "@PJL SET PAPER=LETTER<0A>"
+*PageSize A4/A4: "@PJL SET PAPER=A4<0A>"
+*PageSize A5/A5: "@PJL SET PAPER=A5<0A>"
+*PageSize A6/A6: "@PJL SET PAPER=A6<0A>"
+*PageSize ISOB5/ISO B5: "@PJL SET PAPER=B5<0A>"
+*PageSize EnvC5/C5: "@PJL SET PAPER=C5<0A>"
+*PageSize Env10/Com 10: "@PJL SET PAPER=COM10<0A>"
+*PageSize EnvDL/DL: "@PJL SET PAPER=DL<0A>"
+*PageSize 5x13/Eight Point 5x13: "@PJL SET PAPER=EIGHTPOINT5X13<0A>"
+*PageSize EnvC6/Envelope C6: "@PJL SET PAPER=ENVELOPEC6<0A>"
+*PageSize Executive/Executive: "@PJL SET PAPER=EXECUTIVE<0A>"
+*PageSize B5/JIS B5: "@PJL SET PAPER=JISB5<0A>"
+*PageSize B6/JIS B6: "@PJL SET PAPER=JISB6<0A>"
+*PageSize Legal/Legal: "@PJL SET PAPER=LEGAL<0A>"
+*PageSize EnvMonarch/Monarch: "@PJL SET PAPER=MONARCH<0A>"
+*PageSize 69x95mm/16K: "@PJL SET PAPER=SIZE16K195x270<0A>"
+*PageSize Statement/Statement: "@PJL SET PAPER=STATEMENT<0A>"
+*JCLCloseUI: *PageSize
+
+*JCLOpenUI *PageRegion: PickOne
+*OrderDependency: 100 JCLSetup *PageRegion
+*DefaultPageRegion: Letter
+*PageRegion Letter/Letter: "@PJL SET PAPER=LETTER<0A>"
+*PageRegion A4/A4: "@PJL SET PAPER=A4<0A>"
+*PageRegion A5/A5: "@PJL SET PAPER=A5<0A>"
+*PageRegion A6/A6: "@PJL SET PAPER=A6<0A>"
+*PageRegion ISOB5/ISO B5: "@PJL SET PAPER=B5<0A>"
+*PageRegion EnvC5/C5: "@PJL SET PAPER=C5<0A>"
+*PageRegion Env10/Com 10: "@PJL SET PAPER=COM10<0A>"
+*PageRegion EnvDL/DL: "@PJL SET PAPER=DL<0A>"
+*PageRegion 5x13/Eight Point 5x13: "@PJL SET PAPER=EIGHTPOINT5X13<0A>"
+*PageRegion EnvC6/Envelope C6: "@PJL SET PAPER=ENVELOPEC6<0A>"
+*PageRegion Executive/Executive: "@PJL SET PAPER=EXECUTIVE<0A>"
+*PageRegion B5/JIS B5: "@PJL SET PAPER=JISB5<0A>"
+*PageRegion B6/JIS B6: "@PJL SET PAPER=JISB6<0A>"
+*PageRegion Legal/Legal: "@PJL SET PAPER=LEGAL<0A>"
+*PageRegion EnvMonarch/Monarch: "@PJL SET PAPER=MONARCH<0A>"
+*PageRegion 69x95mm/16K: "@PJL SET PAPER=SIZE16K195x270<0A>"
+*PageRegion Statement/Statement: "@PJL SET PAPER=STATEMENT<0A>"
+*JCLCloseUI: *PageRegion
+
+*DefaultImageableArea: Letter
+*ImageableArea Letter/Letter: "18 36 594 756"
+*ImageableArea A4/A4: "18 36 577 806"
+*ImageableArea A5/A5: "18 36 402 559"
+*ImageableArea A6/A6: "18 36 279 384"
+*ImageableArea ISOB5/ISO B5: "18 36 480 672"
+*ImageableArea EnvC5/C5: "18 36 441 613"
+*ImageableArea Env10/Com 10: "18 36 279 648"
+*ImageableArea EnvDL/DL: "18 36 293 587"
+*ImageableArea 5x13/Eight Point 5x13: "18 36 342 900"
+*ImageableArea EnvC6/Envelope C6: "18 36 305 423"
+*ImageableArea Executive/Executive: "18 36 504 720"
+*ImageableArea B5/JIS B5: "18 36 500 691"
+*ImageableArea B6/JIS B6: "18 36 344 482"
+*ImageableArea Legal/Legal: "18 36 594 972"
+*ImageableArea EnvMonarch/Monarch: "18 36 261 504"
+*ImageableArea 69x95mm/16K: "18 36 177 234"
+*ImageableArea Statement/Statement: "18 36 378 576"
+
+*DefaultPaperDimension: Letter
+*PaperDimension Letter/Letter: "612 792"
 *PaperDimension A4/A4: "595 842"
 *PaperDimension A5/A5: "420 595"
-*OpenUI *Resolution/Resolution: PickOne
-*OrderDependency: 10 AnySetup *Resolution
-*DefaultResolution: 226dpi
-*Resolution 226dpi/226 DPI: "<</HWResolution[226 226]/cupsBitsPerColor 8/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*CloseUI: *Resolution
+*PaperDimension A6/A6: "297 420"
+*PaperDimension ISOB5/ISO B5: "498 708"
+*PaperDimension EnvC5/C5: "459 649"
+*PaperDimension Env10/Com 10: "297 684"
+*PaperDimension EnvDL/DL: "311 623"
+*PaperDimension 5x13/Eight Point 5x13: "360 936"
+*PaperDimension EnvC6/Envelope C6: "323 459"
+*PaperDimension Executive/Executive: "522 756"
+*PaperDimension B5/JIS B5: "518 727"
+*PaperDimension B6/JIS B6: "362 518"
+*PaperDimension Legal/Legal: "612 1008"
+*PaperDimension EnvMonarch/Monarch: "279 540"
+*PaperDimension 69x95mm/16K: "195 270"
+*PaperDimension Statement/Statement: "396 612"
+
+*JCLOpenUI *manualfeed/Manual Feed of Paper: PickOne
+*OrderDependency: 100 JCLSetup *manualfeed
+*Defaultmanualfeed: off
+*manualfeed off/Off: "@PJL SET MANUALFEED=OFF<0A>"
+*manualfeed on/On: "@PJL SET MANUALFEED=ON<0A>"
+*JCLCloseUI: *manualfeed
+
+*JCLOpenUI *manualduplex/Manual duplex: PickOne
+*OrderDependency: 100 JCLSetup *manualduplex
+*Defaultmanualduplex: off
+*manualduplex off/Off: "@PJL SET MANUALDUPLEX=OFF<0A>"
+*manualduplex on/On: "@PJL SET MANUALDUPLEX=ON<0A>"
+*JCLCloseUI: *manualduplex
+
+*JCLOpenUI *Duplex/Double-Sided Printing: PickOne
+*OrderDependency: 100 JCLSetup *Duplex
+*DefaultDuplex: None
+*Duplex None/Off: "@PJL SET DUPLEX=OFF<0A>"
+*Duplex DuplexNoTumble/Long-Edge binding: "@PJL SET DUPLEX=ON<0A>@PJL SET BINDING=LONGEDGE<0A>"
+*Duplex DuplexTumble/Short-Edge binding: "@PJL SET DUPLEX=ON<0A>@PJL SET BINDING=SHORTEDGE<0A>"
+*JCLCloseUI: *Duplex
+
+*JCLOpenUI *ColorModel/Color: PickOne
+*OrderDependency: 100 JCLSetup *ColorModel
+*DefaultColorModel: color
+*ColorModel color/Color: "@PJL SET RENDERMODE=COLOR<0A>"
+*ColorModel grayscale/Black and White: "@PJL SET RENDERMODE=GRAYSCALE<0A>"
+*JCLCloseUI: *ColorModel
+
+*JCLOpenUI *Resolution/Resolution: PickOne
+*OrderDependency: 100 JCLSetup *Resolution
+*DefaultResolution: 600dpi
+*Resolution 300dpi/300 dpi: "@PJL SET RESOLUTION=300<0A>"
+*Resolution 600dpi/600 dpi: "@PJL SET RESOLUTION=600<0A>"
+*Resolution 1200dpi/1200 dpi: "@PJL SET RESOLUTION=1200<0A>"
+*JCLCloseUI: *Resolution
+
+*JCLOpenUI *ret/Resolution Enhancement: PickOne
+*OrderDependency: 100 JCLSetup *ret
+*Defaultret: notset
+*ret dark/Dark: "@PJL SET RET=DARK<0A>"
+*ret light/Light: "@PJL SET RET=LIGHT<0A>"
+*ret medium/Medium: "@PJL SET RET=MEDIUM<0A>"
+*ret notset/notset: "@PJL SET RET=NOTSET<0A>"
+*ret off/Off: "@PJL SET RET=OFF<0A>"
+*JCLCloseUI: *ret
+
+*JCLOpenUI *borderless/Borderless Printing: PickOne
+*OrderDependency: 100 JCLSetup *borderless
+*Defaultborderless: on
+*borderless off/Off: "@PJL SET BORDERLESS=OFF<0A>"
+*borderless on/On: "@PJL SET BORDERLESS=ON<0A>"
+*JCLCloseUI: *borderless
+
+*JCLOpenUI *edgetoedge/Edge to edge: PickOne
+*OrderDependency: 100 JCLSetup *edgetoedge
+*Defaultedgetoedge: yes
+*edgetoedge no/No: "@PJL SET EDGETOEDGE=NO<0A>"
+*edgetoedge yes/Yes: "@PJL SET EDGETOEDGE=YES<0A>"
+*JCLCloseUI: *edgetoedge
+
+*JCLOpenUI *joboffset/Job Offset: PickOne
+*OrderDependency: 100 JCLSetup *joboffset
+*Defaultjoboffset: on
+*joboffset off/Off: "@PJL SET JOBOFFSET=OFF<0A>"
+*joboffset on/On: "@PJL SET JOBOFFSET=ON<0A>"
+*JCLCloseUI: *joboffset
+
+*JCLOpenUI *lowsupplies/On low supplies: PickOne
+*OrderDependency: 100 JCLSetup *lowsupplies
+*Defaultlowsupplies: continue
+*lowsupplies continue/Continue: "@PJL SET LOWSUPPLIES=CONTINUE<0A>"
+*lowsupplies stop/Stop: "@PJL SET LOWSUPPLIES=STOP<0A>"
+*JCLCloseUI: *lowsupplies
+
+*JCLOpenUI *overridea4withletter/Override A4 with Letter: PickOne
+*OrderDependency: 100 JCLSetup *overridea4withletter
+*Defaultoverridea4withletter: yes
+*overridea4withletter no/No: "@PJL SET OVERRIDEA4WITHLETTER=NO<0A>"
+*overridea4withletter yes/Yes: "@PJL SET OVERRIDEA4WITHLETTER=YES<0A>"
+*JCLCloseUI: *overridea4withletter
+
+*CloseGroup: General
+
+
+*% Generic boilerplate PPD stuff as standard PostScript fonts and so on
+
 *DefaultFont: Courier
-*Font AvantGarde-Book: Standard "(1.05)" Standard ROM
-*Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
-*Font AvantGarde-Demi: Standard "(1.05)" Standard ROM
-*Font AvantGarde-DemiOblique: Standard "(1.05)" Standard ROM
-*Font Bookman-Demi: Standard "(1.05)" Standard ROM
-*Font Bookman-DemiItalic: Standard "(1.05)" Standard ROM
-*Font Bookman-Light: Standard "(1.05)" Standard ROM
-*Font Bookman-LightItalic: Standard "(1.05)" Standard ROM
-*Font Courier: Standard "(1.05)" Standard ROM
-*Font Courier-Bold: Standard "(1.05)" Standard ROM
-*Font Courier-BoldOblique: Standard "(1.05)" Standard ROM
-*Font Courier-Oblique: Standard "(1.05)" Standard ROM
-*Font Helvetica: Standard "(1.05)" Standard ROM
-*Font Helvetica-Bold: Standard "(1.05)" Standard ROM
-*Font Helvetica-BoldOblique: Standard "(1.05)" Standard ROM
-*Font Helvetica-Narrow: Standard "(1.05)" Standard ROM
-*Font Helvetica-Narrow-Bold: Standard "(1.05)" Standard ROM
-*Font Helvetica-Narrow-BoldOblique: Standard "(1.05)" Standard ROM
-*Font Helvetica-Narrow-Oblique: Standard "(1.05)" Standard ROM
-*Font Helvetica-Oblique: Standard "(1.05)" Standard ROM
-*Font NewCenturySchlbk-Bold: Standard "(1.05)" Standard ROM
-*Font NewCenturySchlbk-BoldItalic: Standard "(1.05)" Standard ROM
-*Font NewCenturySchlbk-Italic: Standard "(1.05)" Standard ROM
-*Font NewCenturySchlbk-Roman: Standard "(1.05)" Standard ROM
-*Font Palatino-Bold: Standard "(1.05)" Standard ROM
-*Font Palatino-BoldItalic: Standard "(1.05)" Standard ROM
-*Font Palatino-Italic: Standard "(1.05)" Standard ROM
-*Font Palatino-Roman: Standard "(1.05)" Standard ROM
-*Font Symbol: Special "(001.005)" Special ROM
-*Font Times-Bold: Standard "(1.05)" Standard ROM
-*Font Times-BoldItalic: Standard "(1.05)" Standard ROM
-*Font Times-Italic: Standard "(1.05)" Standard ROM
-*Font Times-Roman: Standard "(1.05)" Standard ROM
-*Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
-*Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of remarkable.ppd, 04094 bytes.
+*Font AvantGarde-Book: Standard "(001.006S)" Standard ROM
+*Font AvantGarde-BookOblique: Standard "(001.006S)" Standard ROM
+*Font AvantGarde-Demi: Standard "(001.007S)" Standard ROM
+*Font AvantGarde-DemiOblique: Standard "(001.007S)" Standard ROM
+*Font Bookman-Demi: Standard "(001.004S)" Standard ROM
+*Font Bookman-DemiItalic: Standard "(001.004S)" Standard ROM
+*Font Bookman-Light: Standard "(001.004S)" Standard ROM
+*Font Bookman-LightItalic: Standard "(001.004S)" Standard ROM
+*Font Courier: Standard "(002.004S)" Standard ROM
+*Font Courier-Bold: Standard "(002.004S)" Standard ROM
+*Font Courier-BoldOblique: Standard "(002.004S)" Standard ROM
+*Font Courier-Oblique: Standard "(002.004S)" Standard ROM
+*Font Helvetica: Standard "(001.006S)" Standard ROM
+*Font Helvetica-Bold: Standard "(001.007S)" Standard ROM
+*Font Helvetica-BoldOblique: Standard "(001.007S)" Standard ROM
+*Font Helvetica-Narrow: Standard "(001.006S)" Standard ROM
+*Font Helvetica-Narrow-Bold: Standard "(001.007S)" Standard ROM
+*Font Helvetica-Narrow-BoldOblique: Standard "(001.007S)" Standard ROM
+*Font Helvetica-Narrow-Oblique: Standard "(001.006S)" Standard ROM
+*Font Helvetica-Oblique: Standard "(001.006S)" Standard ROM
+*Font NewCenturySchlbk-Bold: Standard "(001.009S)" Standard ROM
+*Font NewCenturySchlbk-BoldItalic: Standard "(001.007S)" Standard ROM
+*Font NewCenturySchlbk-Italic: Standard "(001.006S)" Standard ROM
+*Font NewCenturySchlbk-Roman: Standard "(001.007S)" Standard ROM
+*Font Palatino-Bold: Standard "(001.005S)" Standard ROM
+*Font Palatino-BoldItalic: Standard "(001.005S)" Standard ROM
+*Font Palatino-Italic: Standard "(001.005S)" Standard ROM
+*Font Palatino-Roman: Standard "(001.005S)" Standard ROM
+*Font Symbol: Special "(001.007S)" Special ROM
+*Font Times-Bold: Standard "(001.007S)" Standard ROM
+*Font Times-BoldItalic: Standard "(001.009S)" Standard ROM
+*Font Times-Italic: Standard "(001.007S)" Standard ROM
+*Font Times-Roman: Standard "(001.007S)" Standard ROM
+*Font ZapfChancery-MediumItalic: Standard "(001.007S)" Standard ROM
+*Font ZapfDingbats: Special "(001.004S)" Standard ROM
+
+
