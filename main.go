@@ -78,7 +78,7 @@ func main() {
 
 		// Restart xochitl
 		if *restart {
-			_, exitcode := exec.Command("systemctl", "is-enabled", "xochitl").CombinedOutput()
+			_, exitcode := exec.Command("systemctl", "is-active", "xochitl").CombinedOutput()
 			if exitcode == nil {
 				debug("Restarting xochitl")
 				stdout, err := exec.Command("systemctl", "restart", "xochitl").CombinedOutput()
