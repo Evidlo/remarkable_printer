@@ -37,6 +37,11 @@ const METADATA_TEMPLATE = `{
 }
 `
 
+const CONTENT_TEMPLATE = `{
+    "fileType": "pdf"
+}
+`
+
 
 func main() {
 
@@ -169,6 +174,14 @@ func handleRequest(conn net.Conn) {
 	fmt.Println("Saving metadata to", meta_path)
 	f, err = os.Create(meta_path)
 	f.WriteString(fmt.Sprintf(METADATA_TEMPLATE, time.Now().Unix(), title))
+	f.Close()
+
+	// ----- Create .content -----
+
+	cont_path := XOCHITL_DIR + u.String() + ".content"
+	fmt.Println("Saving content file to", cont_path)
+	f, err = os.Create(cont_path)
+	f.WriteString(fmt.Sprintf(CONTENT_TEMPLATE))
 	f.Close()
 
 	conn.Close()
