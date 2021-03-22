@@ -40,7 +40,7 @@
 *JCLToPDFInterpreter: "@PJL ENTER LANGUAGE = PDF<0A>"
 *JCLEnd:              "<1B>%-12345X@PJL EOJ <0A><1B>%-12345X"
 *cupsFilter: "application/vnd.cups-pdf 0 -"
-*cupsFilter2: "application/pdf application/vnd.cups-pdf 0 pdftopdf"
+*cupsFilter2: "application/pdf application/vnd.cups-pdf 0 -"
 
 *OpenGroup: General/General
 *JCLOpenUI *PageSize/Page Size: PickOne
