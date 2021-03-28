@@ -1,3 +1,4 @@
+systemctl stop printer.service || true
 mkdir -p /home/root/bin
 cd /home/root/bin
 wget -O release.zip http://github.com/evidlo/remarkable_printer/releases/latest/download/release.zip
