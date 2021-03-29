@@ -1,0 +1,11 @@
+#!/bin/bash
+# send job name
+echo -n "@PJL JOB NAME = "
+echo "\"$3\""
+# accept PDF as argument or from stdin
+if [ -n "$6" ]
+then
+    cat "$6"
+else
+    cat
+fi
