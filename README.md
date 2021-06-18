@@ -68,4 +68,6 @@ This script simply listens on TCP 9100 and waits for a PDF header, then begins s
 
 ## Debugging
 
+On the reMarkable
+
     journalctl --unit printer -f
