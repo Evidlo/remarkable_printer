@@ -34,7 +34,7 @@ You may need to install system-config-printer first.
     
 #### OSX (manual)
 
-See [Add a network printer by its IP address](https://support.apple.com/guide/mac-help/add-a-printer-on-mac-mh14004/mac).  Choose `HP Jetdirect` for the protocol.
+See [Add a network printer by its IP address](https://support.apple.com/guide/mac-help/add-a-printer-on-mac-mh14004/mac).  Use `10.11.99.1` for the address and `HP Jetdirect` for the protocol.
 
 #### Windows (manual)
 
@@ -68,6 +68,8 @@ This script simply listens on TCP 9100 and waits for a PDF header, then begins s
 
 ## Debugging
 
-On the reMarkable
+On the reMarkable (via [SSH](https://remarkablewiki.com/tech/ssh))
 
     journalctl --unit printer -f
+    
+Then try to print a document.
