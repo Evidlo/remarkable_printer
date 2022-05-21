@@ -83,12 +83,15 @@ func main() {
 
 		// Restart xochitl
 		if *restart {
-			_, exitcode := exec.Command("systemctl", "is-active", "xochitl").CombinedOutput()
-			if exitcode == nil {
-				debug("Restarting xochitl")
-				stdout, err := exec.Command("systemctl", "restart", "xochitl").CombinedOutput()
-				if err != nil {
-					fmt.Println("xochitl restart failed with message:", string(stdout))
+			services := []string{"xochitl", "remux", "tarnish", "draft"}
+			for _, service := range services {
+				_, exitcode := exec.Command("systemctl", "is-active", service).CombinedOutput()
+				if exitcode == nil {
+					debug("Restarting " + service)
+					stdout, err := exec.Command("systemctl", "restart", service).CombinedOutput()
+					if err != nil {
+						fmt.Println(service + " restart failed with message:", string(stdout))
+					}
 				}
 			}
 		}
