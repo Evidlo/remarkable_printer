@@ -8,7 +8,7 @@ Print natively to your reMarkable wirelessly with no extensions or reMarkable cl
 
 Connect the reMarkable via USB and make sure it has internet access.
 
-Connect to the reMarkable with [SSH](https://remarkablewiki.com/tech/ssh) and execute
+Connect to the reMarkable with [SSH](https://remarkable.guide/guide/access/ssh.html) and execute
 
     wget -O - http://raw.githubusercontent.com/Evidlo/remarkable_printer/master/install.sh | sh
     
