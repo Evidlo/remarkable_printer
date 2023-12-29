@@ -72,6 +72,7 @@ func main() {
 	var isSocketActivated = os.Getenv("LISTEN_PID") == strconv.Itoa(os.Getpid())
 	if isSocketActivated {
 		l, err = net.FileListener(os.NewFile(3, "systemd-socket"))
+		fmt.Println("Listening on systemd-socket")
 	} else {
 		l, err = net.Listen("tcp", *CONN_HOST+":"+*CONN_PORT)
 		fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
