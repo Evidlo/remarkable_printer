@@ -73,15 +73,7 @@ func main() {
 	if isSocketActivated {
 		l, err = net.FileListener(os.NewFile(3, "systemd-socket"))
 		fmt.Println("Listening on systemd-socket")
-	} else {
-		l, err = net.Listen("tcp", *CONN_HOST+":"+*CONN_PORT)
-		fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
-	}
-	check(err)
-	defer l.Close() // Close the listener when the application closes.
 
-	for {
-		// Listen for an incoming connection.
 		conn, err := l.Accept()
 		if err != nil {
 			fmt.Println("Error accepting: ", err.Error())
@@ -93,11 +85,28 @@ func main() {
 			restartUISoftware()
 		}
 
-		if isSocketActivated {
-			break
-		}
+	} else {
+		l, err = net.Listen("tcp", *CONN_HOST+":"+*CONN_PORT)
+		fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
 
+		for {
+			// Listen for an incoming connection.
+			conn, err := l.Accept()
+			if err != nil {
+				fmt.Println("Error accepting: ", err.Error())
+				os.Exit(1)
+			}
+			handleRequest(conn)
+
+			if *restart {
+				restartUISoftware()
+			}
+
+		}
 	}
+	check(err)
+	defer l.Close() // Close the listener when the application closes.
+
 }
 
 func debug(msg ...string) {
