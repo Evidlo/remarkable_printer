@@ -4,22 +4,23 @@
 package main
 
 import (
+	"bufio"
+	"flag"
 	"fmt"
+	"io"
 	"net"
 	"os"
 	"os/exec"
-	"bufio"
 	"strings"
-	"io"
-	"flag"
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var (
-	CONN_HOST = "0.0.0.0"
-	CONN_PORT = "9100"
-	LOG_LEVEL = "error"
+	CONN_HOST   = "0.0.0.0"
+	CONN_PORT   = "9100"
+	LOG_LEVEL   = "error"
 	XOCHITL_DIR = "/home/root/.local/share/remarkable/xochitl/"
 )
 
@@ -37,6 +38,11 @@ const METADATA_TEMPLATE = `{
 }
 `
 
+//const CONTENT_TEMPLATE = `{
+//    "fileType": "pdf"
+//}
+//`
+const CONTENT_TEMPLATE = "{}"
 
 func main() {
 
@@ -96,7 +102,6 @@ func check(e error) {
 		panic(e)
 	}
 }
-
 
 // Handles incoming requests.
 func handleRequest(conn net.Conn) {
@@ -158,6 +163,14 @@ func handleRequest(conn net.Conn) {
 	fmt.Println("Saving metadata to", meta_path)
 	f, err = os.Create(meta_path)
 	f.WriteString(fmt.Sprintf(METADATA_TEMPLATE, time.Now().Unix(), title))
+	f.Close()
+
+	// ----- Create .content -----
+
+	cont_path := XOCHITL_DIR + u.String() + ".content"
+	fmt.Println("Saving content file to", cont_path)
+	f, err = os.Create(cont_path)
+	f.WriteString(fmt.Sprintf(CONTENT_TEMPLATE))
 	f.Close()
 
 	conn.Close()
