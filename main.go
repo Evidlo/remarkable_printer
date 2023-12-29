@@ -88,19 +88,8 @@ func main() {
 		}
 		handleRequest(conn)
 
-		// Restart xochitl
 		if *restart {
-			services := []string{"xochitl", "remux", "tarnish", "draft"}
-			for _, service := range services {
-				_, exitcode := exec.Command("systemctl", "is-active", service).CombinedOutput()
-				if exitcode == nil {
-					debug("Restarting " + service)
-					stdout, err := exec.Command("systemctl", "restart", service).CombinedOutput()
-					if err != nil {
-						fmt.Println(service+" restart failed with message:", string(stdout))
-					}
-				}
-			}
+			restartUISoftware()
 		}
 
 		if isSocketActivated {
@@ -197,4 +186,19 @@ func handleRequest(conn net.Conn) {
 	f.Close()
 
 	conn.Close()
+}
+
+// Restarts xochitl or other UI software
+func restartUISoftware() {
+	services := []string{"xochitl", "remux", "tarnish", "draft"}
+	for _, service := range services {
+		_, exitcode := exec.Command("systemctl", "is-active", service).CombinedOutput()
+		if exitcode == nil {
+			debug("Restarting " + service)
+			stdout, err := exec.Command("systemctl", "restart", service).CombinedOutput()
+			if err != nil {
+				fmt.Println(service+" restart failed with message:", string(stdout))
+			}
+		}
+	}
 }
