@@ -11,6 +11,7 @@ import (
 	"net"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 
@@ -27,6 +28,8 @@ var (
 const METADATA_TEMPLATE = `{
     "deleted": false,
     "lastModified": "%d000",
+    "lastOpened": "0",
+    "lastOpenedPage": 0,
     "metadatamodified": true,
     "modified": true,
     "parent": "",
@@ -38,17 +41,13 @@ const METADATA_TEMPLATE = `{
 }
 `
 
-//const CONTENT_TEMPLATE = `{
-//    "fileType": "pdf"
-//}
-//`
 const CONTENT_TEMPLATE = "{}"
 
 func main() {
 
 	// ----- Parse options -----
 
-	debug := flag.Bool("debug", false, "enable debug output")
+	debug_flag := flag.Bool("debug", false, "enable debug output")
 	test := flag.Bool("test", false, "use /tmp as output dir")
 	restart := flag.Bool("restart", false, "restart xochitl after saving PDF")
 	CONN_HOST := flag.String("host", CONN_HOST, "override bind address")
@@ -56,8 +55,9 @@ func main() {
 
 	flag.Parse()
 
-	if *debug {
+	if *debug_flag {
 		LOG_LEVEL = "debug"
+		debug("Debugging enabled")
 	}
 	if *test {
 		XOCHITL_DIR = "/tmp/"
@@ -66,34 +66,52 @@ func main() {
 	// ----- Listen for connections -----
 
 	// Listen for incoming connections.
-	l, err := net.FileListener(os.NewFile(3, "systemd-socket"))
+
+	var l net.Listener
+	var err error
+	if os.Getenv("LISTEN_PID") == strconv.Itoa(os.Getpid()) {
+		l, err = net.FileListener(os.NewFile(3, "systemd-socket"))
+	} else {
+		l, err = net.Listen("tcp", *CONN_HOST+":"+*CONN_PORT)
+		fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
+	}
 	check(err)
-	defer l.Close()
+	defer l.Close() // Close the listener when the application closes.
 
-	// Close the listener when the application closes.
-	fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
-
-	// Listen for an incoming connection.
-	conn, err := l.Accept()
-	if err != nil {
-		fmt.Println("Error accepting: ", err.Error())
-		os.Exit(1)
-	}
-	handleRequest(conn)
-
-	// Restart xochitl
-	if *restart {
-		stdout, err := exec.Command("systemctl", "restart", "xochitl").CombinedOutput()
+	for {
+		// Listen for an incoming connection.
+		conn, err := l.Accept()
 		if err != nil {
-			fmt.Println("xochitl restart failed with message:", string(stdout))
+			fmt.Println("Error accepting: ", err.Error())
+			os.Exit(1)
 		}
-	}
+		handleRequest(conn)
 
+		// Restart xochitl
+		if *restart {
+			services := []string{"xochitl", "remux", "tarnish", "draft"}
+			for _, service := range services {
+				_, exitcode := exec.Command("systemctl", "is-active", service).CombinedOutput()
+				if exitcode == nil {
+					debug("Restarting " + service)
+					stdout, err := exec.Command("systemctl", "restart", service).CombinedOutput()
+					if err != nil {
+						fmt.Println(service+" restart failed with message:", string(stdout))
+					}
+				}
+			}
+		}
+
+	}
 }
 
 func debug(msg ...string) {
 	if LOG_LEVEL == "debug" {
-		fmt.Println(msg)
+		for _, value := range msg {
+			fmt.Print(value)
+			fmt.Print(" ")
+		}
+		fmt.Println()
 	}
 }
 
@@ -107,7 +125,7 @@ func check(e error) {
 func handleRequest(conn net.Conn) {
 	u, _ := uuid.NewRandom()
 	pdf_path := XOCHITL_DIR + u.String() + ".pdf"
-	fmt.Println("Saving PDF to", pdf_path)
+	fmt.Println("Saving PDF to:", pdf_path)
 
 	// ----- Create .pdf -----
 
@@ -120,11 +138,11 @@ func handleRequest(conn net.Conn) {
 	// Read until start of PDF
 	for {
 		line, err := reader.ReadString('\n')
-		debug(line)
+		debug(strings.TrimRight(line, "\n"))
 		// set print job name as file title
 		if strings.HasPrefix(line, "@PJL JOB NAME") {
 			title = strings.Split(line, "\"")[1]
-			debug("Setting title to", title)
+			debug("Setting title to:", title)
 		}
 		// PDF section started
 		if strings.HasPrefix(line, "%PDF-") {

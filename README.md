@@ -8,7 +8,7 @@ Print natively to your reMarkable wirelessly with no extensions or reMarkable cl
 
 Connect the reMarkable via USB and make sure it has internet access.
 
-Connect to the reMarkable with [SSH](https://remarkablewiki.com/tech/ssh) and execute
+Connect to the reMarkable with [SSH](https://remarkable.guide/guide/access/ssh.html) and execute
 
     wget -O - http://raw.githubusercontent.com/Evidlo/remarkable_printer/master/install.sh | sh
     
@@ -24,17 +24,17 @@ Then configure your OS to print to the reMarkable, shown below.
 
 We will add the reMarkable as an Appsocket/JetDirect printer and use the PDF printer driver.
 
-Linux
-
     $ sudo system-config-printer
     # Add > Network Printer > AppSocket/HP JetDirect
     # Enter the address/hostname of the device (10.11.99.1 for USB connected device)
     # Forward > Generic > Forward > PDF > Forward
     # Set the printer name and save
     
+You may need to install system-config-printer first.
+    
 #### OSX (manual)
 
-See [Add a network printer by its IP address](https://support.apple.com/guide/mac-help/add-a-printer-on-mac-mh14004/mac).  Choose `HP Jetdirect` for the protocol.
+See [Add a network printer by its IP address](https://support.apple.com/guide/mac-help/add-a-printer-on-mac-mh14004/mac).  Use `10.11.99.1` for the address and `HP Jetdirect` for the protocol.
 
 #### Windows (manual)
 
@@ -68,4 +68,8 @@ This script simply listens on TCP 9100 and waits for a PDF header, then begins s
 
 ## Debugging
 
+On the reMarkable (via [SSH](https://remarkablewiki.com/tech/ssh))
+
     journalctl --unit printer -f
+    
+Then try to print a document.

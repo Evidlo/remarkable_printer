@@ -42,6 +42,8 @@ install_config:
 		-v socket://$(host) \
 		-P remarkable.ppd
 		# -m lsb/usr/cupsfilters/Generic-PDF_Printer-PDF.ppd
+	sudo cp rmfilter /usr/lib/cups/filter || true
+	sudo cp rmfilter /usr/libexec/cups/filter || true
 
 clean:
 	rm -f printer.x86 printer.arm release.zip
