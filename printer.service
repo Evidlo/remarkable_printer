@@ -4,7 +4,6 @@ Requires=printer.socket
 
 [Service]
 ExecStart=/home/root/bin/printer.arm -restart -debug
-Restart=always
 
 [Install]
 WantedBy=multi-user.target
