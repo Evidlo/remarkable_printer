@@ -3,6 +3,8 @@
 
 host=10.11.99.1
 
+version := $(shell go list | cut -d / -f 4)
+
 printer.arm:
 	go get ./...
 	env GOOS=linux GOARCH=arm GOARM=5 go build -o printer.arm
@@ -33,6 +35,7 @@ install: printer.arm
 release: printer.arm printer.x86
 	rm -f release.zip
 	zip release.zip printer.arm printer.x86 printer.service printer.socket -r
+	gh release create --latest --verify-tag $(version) release.zip
 
 .PHONY: install_config
 install_config:
