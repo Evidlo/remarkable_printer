@@ -3,7 +3,7 @@ Description=Socket for native printing to reMarkable
 After=multi-user.target
 
 [Socket]
-ListenStream=10.11.99.1:9100
+ListenStream=0.0.0.0:9100
 
 [Install]
 WantedBy=multi-user.target
