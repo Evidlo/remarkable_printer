@@ -37,6 +37,13 @@ release: printer.arm printer.x86
 	zip release.zip printer.arm printer.x86 printer.service printer.socket -r
 	gh release create --latest --verify-tag $(version) release.zip
 
+# tag and push tag
+.PHONY: tag
+tag:
+	git tag $(version)
+	git push --tags
+
+
 .PHONY: install_config
 install_config:
 	sudo lpadmin -p reMarkable \
