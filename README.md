@@ -48,7 +48,7 @@ No authentication, so keep WiFi off while not in use.
 
 Virtually all network printers accept raw Postscript/PDF data on TCP port 9100 via the Appsocket/HP Jetdirect protocol.  Sometimes this data is preceded by a few plaintext lines telling the printer information such as the print job name and print settings.
 
-This script simply listens on TCP 9100 and waits for a PDF header, then begins saving data to a pdf file (while also creating the accompanying .metadata file).  The output filename is extracted from the print job name line, if it exists.
+This setup simply listens on TCP 9100 and upon data sent waits for a PDF header, then begins saving data to a pdf file (while also creating the accompanying .metadata file) and then exits again, waiting for the next connection on the port to repeat the procedure.  The output filename is extracted from the print job name line, if it exists.
 
 ## Testing on host
 

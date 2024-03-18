@@ -4,22 +4,24 @@
 package main
 
 import (
+	"bufio"
+	"flag"
 	"fmt"
+	"io"
 	"net"
 	"os"
 	"os/exec"
-	"bufio"
+	"strconv"
 	"strings"
-	"io"
-	"flag"
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var (
-	CONN_HOST = "0.0.0.0"
-	CONN_PORT = "9100"
-	LOG_LEVEL = "error"
+	CONN_HOST   = "0.0.0.0"
+	CONN_PORT   = "9100"
+	LOG_LEVEL   = "error"
 	XOCHITL_DIR = "/home/root/.local/share/remarkable/xochitl/"
 )
 
@@ -39,11 +41,7 @@ const METADATA_TEMPLATE = `{
 }
 `
 
-const CONTENT_TEMPLATE = `{
-    "fileType": "pdf"
-}
-`
-
+const CONTENT_TEMPLATE = "{}"
 
 func main() {
 
@@ -68,14 +66,14 @@ func main() {
 	// ----- Listen for connections -----
 
 	// Listen for incoming connections.
-	l, err := net.Listen("tcp", *CONN_HOST + ":" + *CONN_PORT)
-	check(err)
-	defer l.Close()
 
-	// Close the listener when the application closes.
-	fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
-	for {
-		// Listen for an incoming connection.
+	var l net.Listener
+	var err error
+	var isSocketActivated = os.Getenv("LISTEN_PID") == strconv.Itoa(os.Getpid())
+	if isSocketActivated {
+		l, err = net.FileListener(os.NewFile(3, "systemd-socket"))
+		fmt.Println("Listening on systemd-socket")
+
 		conn, err := l.Accept()
 		if err != nil {
 			fmt.Println("Error accepting: ", err.Error())
@@ -83,24 +81,33 @@ func main() {
 		}
 		handleRequest(conn)
 
-		// Restart xochitl
 		if *restart {
-			services := []string{"xochitl", "remux", "tarnish", "draft"}
-			for _, service := range services {
-				_, exitcode := exec.Command("systemctl", "is-active", service).CombinedOutput()
-				if exitcode == nil {
-					debug("Restarting " + service)
-					stdout, err := exec.Command("systemctl", "restart", service).CombinedOutput()
-					if err != nil {
-						fmt.Println(service + " restart failed with message:", string(stdout))
-					}
-				}
-			}
+			restartUISoftware()
 		}
 
-	}
-}
+	} else {
+		l, err = net.Listen("tcp", *CONN_HOST+":"+*CONN_PORT)
+		fmt.Println("Listening on " + *CONN_HOST + ":" + *CONN_PORT)
 
+		for {
+			// Listen for an incoming connection.
+			conn, err := l.Accept()
+			if err != nil {
+				fmt.Println("Error accepting: ", err.Error())
+				os.Exit(1)
+			}
+			handleRequest(conn)
+
+			if *restart {
+				restartUISoftware()
+			}
+
+		}
+	}
+	check(err)
+	defer l.Close() // Close the listener when the application closes.
+
+}
 
 func debug(msg ...string) {
 	if LOG_LEVEL == "debug" {
@@ -117,7 +124,6 @@ func check(e error) {
 		panic(e)
 	}
 }
-
 
 // Handles incoming requests.
 func handleRequest(conn net.Conn) {
@@ -190,4 +196,19 @@ func handleRequest(conn net.Conn) {
 	f.Close()
 
 	conn.Close()
+}
+
+// Restarts xochitl or other UI software
+func restartUISoftware() {
+	services := []string{"xochitl", "remux", "tarnish", "draft"}
+	for _, service := range services {
+		_, exitcode := exec.Command("systemctl", "is-active", service).CombinedOutput()
+		if exitcode == nil {
+			debug("Restarting " + service)
+			stdout, err := exec.Command("systemctl", "restart", service).CombinedOutput()
+			if err != nil {
+				fmt.Println(service+" restart failed with message:", string(stdout))
+			}
+		}
+	}
 }
