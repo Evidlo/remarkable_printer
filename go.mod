@@ -1,4 +1,4 @@
-module github.com/Evidlo/remarkable_printer
+module github.com/Evidlo/remarkable_printer/v12.0.0
 
 go 1.18
 
