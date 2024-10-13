@@ -10,7 +10,7 @@ Connect the reMarkable via USB and make sure it has internet access.
 
 Connect to the reMarkable with [SSH](https://remarkable.guide/guide/access/ssh.html) and execute
 
-    wget -O - http://raw.githubusercontent.com/Evidlo/remarkable_printer/master/install.sh | sh
+    wget -O - http://evidlo.github.io/remarkable_printer/install.sh | sh
     
 Then configure your OS to print to the reMarkable, shown below.
     

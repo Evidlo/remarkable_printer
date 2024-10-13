@@ -204,7 +204,7 @@ func restartUISoftware() {
 	for _, service := range services {
 		_, exitcode := exec.Command("systemctl", "is-active", service).CombinedOutput()
 		if exitcode == nil {
-			debug("Restarting " + service)
+			fmt.Println("Restarting " + service)
 			stdout, err := exec.Command("systemctl", "restart", service).CombinedOutput()
 			if err != nil {
 				fmt.Println(service+" restart failed with message:", string(stdout))
