@@ -164,18 +164,17 @@ func handleRequest(conn net.Conn) {
 	// Read until end of PDF
 	for {
 		line, err := reader.ReadString('\n')
-		_, err = f.WriteString(line)
-		check(err)
 		// end of pdf file
 		if strings.HasPrefix(line, "%%EOF") {
 			f.Close()
 			break
 		}
 		if err == io.EOF {
-			debug(line)
 			debug("Couldn't find PDF end")
 			os.Exit(1)
 		}
+		check(err)
+		_, err = f.WriteString(line)
 		check(err)
 	}
 
