@@ -142,6 +142,11 @@ func handleRequest(conn net.Conn) {
 	// Read until start of PDF
 	for {
 		line, err := reader.ReadString('\n')
+		if err == io.EOF {
+			fmt.Println("Couldn't find PDF start")
+			os.Exit(1)
+		}
+		check(err)
 		debug(strings.TrimRight(line, "\n"))
 		// set print job name as file title
 		if strings.HasPrefix(line, "@PJL JOB NAME") {
@@ -155,27 +160,27 @@ func handleRequest(conn net.Conn) {
 			check(err)
 			break
 		}
-		if err == io.EOF {
-			fmt.Println("Couldn't find PDF start")
-			os.Exit(1)
-		}
-		check(err)
 	}
+	last := ""
 	// Read until end of PDF
 	for {
 		line, err := reader.ReadString('\n')
 		// end of pdf file
-		if strings.HasPrefix(line, "%%EOF") {
-			f.Close()
-			break
-		}
-		if err == io.EOF {
-			debug("Couldn't find PDF end")
-			os.Exit(1)
+		if (err == io.EOF) {
+			if strings.HasPrefix(last, "%%EOF") {
+				_, err = f.WriteString(line)
+				f.Close()
+				break
+			} else {
+				debug("Couldn't find PDF end")
+				os.Exit(1)
+			}
 		}
 		check(err)
 		_, err = f.WriteString(line)
-		check(err)
+		if (len(line) > 0) {
+			last = line
+		}
 	}
 
 	// ----- Create .metadata -----
