@@ -144,6 +144,8 @@ func handleRequest(conn net.Conn) {
 		line, err := reader.ReadString('\n')
 		if err == io.EOF {
 			fmt.Println("Couldn't find PDF start")
+			// Clean up
+			os.Remove(pdf_path)
 			os.Exit(1)
 		}
 		check(err)
@@ -161,24 +163,57 @@ func handleRequest(conn net.Conn) {
 			break
 		}
 	}
-	last := ""
 	// Read until end of PDF
+
+
+	// ----------
+	// line: 116
+
+	// linelen: 5
+	// err: <nil>
+	// ----------
+	// line: %%EOF
+
+	// linelen: 7
+	// err: <nil>
+	// ----------
+	// line:
+	// linelen: 0
+	// err: EOF
+	// Couldn't find PDF end
+
+
+	// ----------
+	// line: 924148
+
+	// linelen: 7
+	// err: <nil>
+	// ----------
+	// line: %%EOF
+	// linelen: 5
+	// err: EOF
+	// Saving metadata to /tmp/49ea3977-acfa-4789-908e-fae620f6c617.metadata
+	// Saving content file to /tmp/49ea3977-acfa-4789-908e-fae620f6c617.content
+
+
+	last := ""
 	for {
 		line, err := reader.ReadString('\n')
 		// end of pdf file
 		if (err == io.EOF) {
-			if strings.HasPrefix(last, "%%EOF") {
+			if strings.HasPrefix(line, "%%EOF") || strings.HasPrefix(last, "%%EOF") {
 				_, err = f.WriteString(line)
 				f.Close()
 				break
 			} else {
 				debug("Couldn't find PDF end")
+				os.Remove(pdf_path)
 				os.Exit(1)
 			}
 		}
 		check(err)
 		_, err = f.WriteString(line)
-		if (len(line) > 0) {
+		if len(line) > 0 {
 			last = line
 		}
 	}
