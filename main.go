@@ -197,11 +197,16 @@ func handleRequest(conn net.Conn) {
 
 
 	last := ""
+	got_EOF := false
 	for {
 		line, err := reader.ReadString('\n')
+		// debug(line)
+		if strings.HasPrefix(line, "%%EOF") || strings.HasPrefix(last, "%%EOF") {
+			got_EOF = true
+		}
 		// end of pdf file
 		if (err == io.EOF) {
-			if strings.HasPrefix(line, "%%EOF") || strings.HasPrefix(last, "%%EOF") {
+			if got_EOF {
 				_, err = f.WriteString(line)
 				f.Close()
 				break
